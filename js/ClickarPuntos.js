@@ -2,22 +2,22 @@
 
 // Shader de vertices
 var VSHADER_SOURCE = 
-'precision mediump float;                                           \n' +
-'attribute vec4 posicion;                                           \n' +
-'varying vec4 color;                                                \n' +
-'void main(){                                                       \n' +
-'   gl_Position = posicion;                                         \n' +
-'   gl_PointSize = 10.0;                                            \n' +
-'   float i = sqrt(pow(posicion[0], 2.0) + pow(posicion[1], 2.0));  \n' +
-'   color = vec4(1.0-i, 1.0-i, 1.0-i, 1.0);                         \n' +
-'}                                                                  \n';
+'precision mediump float;\n' +
+'attribute vec4 posicion;\n' +
+'varying vec4 color;\n' +
+'void main(){\n' +
+'   gl_Position = posicion;\n' +
+'   gl_PointSize = 10.0;\n' +
+'   float i = sqrt(pow(posicion[0], 2.0) + pow(posicion[1], 2.0) + pow(posicion[2], 2.0));\n' +
+'   color = vec4(1.0-i, 1.0-i, 1.0-i, 1.0);\n' +
+'}\n';
 
 var FSHADER_SOURCE = 
-'precision mediump float;     \n' +
-'varying vec4 color;          \n' +
-'void main(){                 \n' +
-'   gl_FragColor = color;     \n' +
-'}                            \n';
+'precision mediump float;\n' +
+'varying vec4 color;\n' +
+'void main(){\n' +
+'   gl_FragColor = color;\n' +
+'}\n';
 
 function main() {
   // Obtener el canvas
