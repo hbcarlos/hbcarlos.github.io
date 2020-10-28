@@ -154,7 +154,7 @@ function crearNervios(material){
   return nervios;
 }
 
-function crearPinza(material){
+function crearMano(material){
   mano = new THREE.Object3D();
 
   var geoPalma = new THREE.CylinderGeometry( 15, 15, 40, 15 );
