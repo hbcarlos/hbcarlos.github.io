@@ -18,19 +18,21 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Los datos de Carlos
-email: 26092748+hbcarlos@users.noreply.github.com
-description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+title: Carlos Herrero
+#email: 26092748+hbcarlos@users.noreply.github.com
+#description: Los datos de Carlos
 domain: hbcarlos.github.io       # if you want to force HTTPS, specify the domain without the http at the start, e.g. example.com
 url: https://hbcarlos.github.io  # the base hostname and protocol for your site, e.g. http://example.com
 baseurl: /hbcarlos.github.io/      # place folder name if the site is served in a subfolder
-github_username:  hbcarlos
+#github_username: hbcarlos
+#google_analytics: [Your Google Analytics tracking ID]
 
 # Build settings
+header_pages:
+  - about.md
 theme: minima
+minima:
+  skin: auto
 plugins:
   - jekyll-feed
 
