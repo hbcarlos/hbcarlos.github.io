@@ -1,0 +1,10 @@
+[workspace]
+authors = ["Carlos Herrero <26092748+hbcarlos@users.noreply.github.com>"]
+channels = ["conda-forge"]
+name = "hbcarlos.github.io"
+platforms = ["osx-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
