@@ -8,3 +8,6 @@ version = "0.1.0"
 [tasks]
 
 [dependencies]
+ruby = ">=3.4.8,<4"
+compilers = ">=1.11.0,<2"
+make = ">=4.4.1,<5"
