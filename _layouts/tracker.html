@@ -16,7 +16,7 @@
     var destination = "{{ page.destination }}";
     var redirected = false;
 
-    // Función de redirección segura (evita bucles)
+    // Función de redirección
     function doRedirect() {
       if (!redirected && destination) {
         redirected = true;
@@ -24,30 +24,40 @@
       }
     }
 
-    // 2. Enviamos un evento explícito antes de irnos
-    // Usamos 'event_callback' para saber cuándo ha terminado de enviarse el dato
-    function trackAndRedirect() {
+    // 2. Lógica de rastreo que se ejecuta al cargar la ventana
+    window.onload = function() {
+      
+      // Verificamos si GA4 (gtag) se ha cargado correctamente
       if (typeof gtag === 'function') {
-        gtag('event', 'redirect_click', {
-          'event_category': 'Engagement',
-          'event_label': '{{ page.title }}',
-          'destination_url': destination,
-          'event_callback': doRedirect, // Si GA responde, nos vamos
-          'event_timeout': 2000         // Esperamos máx 2 seg a GA
+        
+        // Enviamos el evento con 'transport: beacon' (CLAVE PARA REDIRECCIONES)
+        gtag('event', 'page_view', {
+          'page_location': window.location.href,
+          'page_title': '{{ page.title }}',
+          'transport_type': 'beacon', // Esto salva el dato al cerrar la web
+          'event_callback': function() {
+            // Si GA confirma el envío, redirigimos
+            doRedirect();
+          }
         });
+
+        // Configuración de seguridad: Si GA tarda más de 1.5s, nos vamos igual
+        setTimeout(doRedirect, 1500);
+
       } else {
-        // Si GA falla o AdBlock lo bloquea, nos vamos igual
+        // Si el script de GA no cargó (bloqueador de anuncios, error red), redirigimos ya
+        console.log("Analytics no cargó, redirigiendo...");
         doRedirect();
       }
-    }
+    };
 
-    // 3. Respaldo por tiempo (por si acaso todo falla)
-    setTimeout(doRedirect, 2500);
+    // 3. Red de seguridad final (por si window.onload falla)
+    setTimeout(doRedirect, 3000);
   </script>
 </head>
-<body onload="trackAndRedirect()">
+<body>
   <div class="loader"></div>
   <h3>Te estamos redirigiendo a {{ page.title }}...</h3>
-  <p>Si no sucede nada, <a href="{{ page.destination }}">haz clic aquí</a>.</p>
+  <p>Si no sucede nada en unos segundos, <a href="{{ page.destination }}">haz clic aquí</a>.</p>
 </body>
 </html>
