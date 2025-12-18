@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "es" }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Redirigiendo a {{ page.title }}...</title>
+  
+  <style>
+    body { font-family: sans-serif; text-align: center; padding-top: 50px; color: #666; }
+    .loader { margin-top: 20px; font-size: 24px; }
+  </style>
+
+  <!--{% include analytics.html %}-->
+
+  <script>
+    var destination = "{{ page.destination }}";
+
+    function redirect() {
+      window.location.href = destination;
+    }
+
+    // Esperamos a que GA esté listo o forzamos la redirección tras 1 seg
+    // (Por si el usuario usa AdBlock y bloquea Analytics)
+    setTimeout(redirect, 1000); 
+
+    // Evento específico para GA4 (opcional, para ser más preciso)
+    // Si usas gtag, esto asegura que se envíe antes de irse
+    if (typeof gtag === 'function') {
+      gtag('event', 'page_view', {
+        'page_location': window.location.href,
+        'page_path': window.location.pathname,
+        'page_title': '{{ page.title }}',
+        'event_callback': redirect // Intenta redirigir en cuanto se envíe el dato
+      });
+    }
+  </script>
+
+  <meta http-equiv="refresh" content="3;url={{ page.destination }}">
+</head>
+<body>
+  <h1>Te estamos redirigiendo a {{ page.title }}...</h1>
+  <p>Si no eres redirigido en unos segundos, <a href="{{ page.destination }}">haz clic aquí</a>.</p>
+</body>
+</html>
