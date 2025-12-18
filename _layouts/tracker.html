@@ -22,6 +22,11 @@
 
   <script>
     var destination = "{{ page.destination }}";
+    const urlParams = new URLSearchParams(window.location.search);
+    const contentParam = urlParams.get('utm_content');
+    if (contentParam) {
+      destination += contentParam;
+    }
 
     // Esperamos 1.5 segundos para asegurar que analytics.html
     // tenga tiempo de enviar el dato a Google antes de irnos.

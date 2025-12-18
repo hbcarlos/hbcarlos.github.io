@@ -2,7 +2,7 @@ import pikepdf
 import sys
 
 # CONFIGURACIÓN
-TEMPLATE_PDF = "cv_template.pdf"  # El PDF que exportaste de Pages
+TEMPLATE_PDF = "data/cv_template.pdf"  # El PDF que exportaste de Pages
 PLACEHOLDER = "VAR_CLIENTE"       # El texto que pusiste en la URL en Pages
 
 def generar_cv(empresa):
@@ -34,7 +34,7 @@ def generar_cv(empresa):
                         contador += 1
 
     # Guardamos el archivo nuevo
-    nombre_salida = f"CV_{empresa.capitalize()}.pdf"
+    nombre_salida = f"data/CV_{empresa.capitalize()}.pdf"
     pdf.save(nombre_salida)
     print(f"✅ ¡Listo! Se actualizaron {contador} enlaces.")
     for uri in uris:
