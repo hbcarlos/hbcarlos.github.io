@@ -2,42 +2,52 @@
 <html lang="{{ page.lang | default: site.lang | default: "es" }}">
 <head>
   <meta charset="utf-8">
-  <meta name="robots" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Redirigiendo a {{ page.title }}...</title>
+  <meta name="robots" content="noindex, nofollow">
+  <title>Redirigiendo...</title>
   
   <style>
-    body { font-family: sans-serif; text-align: center; padding-top: 50px; color: #666; }
-    .loader { margin-top: 20px; font-size: 24px; }
+    body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; color: #555; }
+    .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 20px; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 
   <script>
     var destination = "{{ page.destination }}";
+    var redirected = false;
 
-    function redirect() {
-      window.location.href = destination;
+    // Función de redirección segura (evita bucles)
+    function doRedirect() {
+      if (!redirected && destination) {
+        redirected = true;
+        window.location.href = destination;
+      }
     }
 
-    // Esperamos a que GA esté listo o forzamos la redirección tras 1 seg
-    // (Por si el usuario usa AdBlock y bloquea Analytics)
-    setTimeout(redirect, 1000); 
-
-    // Evento específico para GA4 (opcional, para ser más preciso)
-    // Si usas gtag, esto asegura que se envíe antes de irse
-    if (typeof gtag === 'function') {
-      gtag('event', 'page_view', {
-        'page_location': window.location.href,
-        'page_path': window.location.pathname,
-        'page_title': '{{ page.title }}',
-        'event_callback': redirect // Intenta redirigir en cuanto se envíe el dato
-      });
+    // 2. Enviamos un evento explícito antes de irnos
+    // Usamos 'event_callback' para saber cuándo ha terminado de enviarse el dato
+    function trackAndRedirect() {
+      if (typeof gtag === 'function') {
+        gtag('event', 'redirect_click', {
+          'event_category': 'Engagement',
+          'event_label': '{{ page.title }}',
+          'destination_url': destination,
+          'event_callback': doRedirect, // Si GA responde, nos vamos
+          'event_timeout': 2000         // Esperamos máx 2 seg a GA
+        });
+      } else {
+        // Si GA falla o AdBlock lo bloquea, nos vamos igual
+        doRedirect();
+      }
     }
+
+    // 3. Respaldo por tiempo (por si acaso todo falla)
+    setTimeout(doRedirect, 2500);
   </script>
-
-  <meta http-equiv="refresh" content="3;url={{ page.destination }}">
 </head>
-<body>
-  <h1>Te estamos redirigiendo a {{ page.title }}...</h1>
-  <p>Si no eres redirigido en unos segundos, <a href="{{ page.destination }}">haz clic aquí</a>.</p>
+<body onload="trackAndRedirect()">
+  <div class="loader"></div>
+  <h3>Te estamos redirigiendo a {{ page.title }}...</h3>
+  <p>Si no sucede nada, <a href="{{ page.destination }}">haz clic aquí</a>.</p>
 </body>
 </html>
