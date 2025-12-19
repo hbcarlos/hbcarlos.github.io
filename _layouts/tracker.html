@@ -24,11 +24,17 @@
     var destination = "{{ page.destination }}";
     const urlParams = new URLSearchParams(window.location.search);
     const contentParam = urlParams.get('utm_content');
-    if (contentParam) {
+
+    if (destination == "https://github.com/" && contentParam) {
+      // Si es la redirección de proyecto, buscar el proyecto.
       destination += contentParam;
+
+    } else if (destination == "https://github.com/") {
+      // Si es la redirección de proyecto pero no hay un proyecto, redirigir a home.
+      window.location.href = '/';
     }
 
-    // Esperamos 1.5 segundos para asegurar que analytics.html
+    // Esperamos 1 segundos para asegurar que analytics.html
     // tenga tiempo de enviar el dato a Google antes de irnos.
     setTimeout(() => window.location.href = destination, 1000);
   </script>

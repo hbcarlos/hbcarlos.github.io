@@ -1,11 +1,11 @@
 ---
 layout: page
 title: Blog
+title_header: Aquí comparto mis pensamientos y tutoriales 📜
 permalink: /blog/
 ---
-<h1>Aquí comparto mis pensamientos y tutoriales 📜</h1>
 
-<ul>
+<ul class="clean-list">
   {% for post in site.posts %}
     <li>
       <h3>
