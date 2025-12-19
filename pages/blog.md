@@ -2,7 +2,6 @@
 layout: page
 title: Blog
 permalink: /blog/
-order: 1
 ---
 <h1>Aquí comparto mis pensamientos y tutoriales 📜</h1>
 

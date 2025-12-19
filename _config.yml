@@ -32,7 +32,7 @@ google_analytics: G-9LPQ4WWS17
 # Build settings
 permalink: /blog/:title/ #:year/:month/:day/
 header_pages:
-  - blog.md
+  - pages/blog.md
 theme: minima
 minima:
   skin: auto
