@@ -11,3 +11,6 @@ Gemfile.lock
 
 # resources
 data/
+
+# Mac
+.DS_Store

@@ -7,6 +7,21 @@
 	text-align: center;
 }
 
+.home-header {
+	text-align: center;
+}
+
+.home-header img {
+	width: 250px;
+	height: 250px;
+	box-sizing: border-box;       /* el padding no agranda el círculo */
+	/*padding-top: 60px;      /* arriba | laterales | abajo */
+	border-radius: 50%;
+	object-fit: contain;
+	object-position: bottom;      /* la foto se pega abajo */
+	/* background-color: #50bbf0;*/
+}
+
 .wrapper-copy {
 	text-align: center;
   
