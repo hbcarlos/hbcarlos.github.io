@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  {% if page.noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
+  
+  <title>{{ page.title | default: site.title | escape }}</title>
+  {% include analytics.html %}
+
+  <!-- reveal.js core + theme (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/{{ page.theme | default: 'white' }}.css" id="theme">
+  <!-- code highlighting theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/monokai.css">
+
+  <style>
+    /* Shrink all slide typography. reveal.js 5 themes are driven by these
+       CSS variables, so overriding them scales body + headings together.
+       (Theme defaults: main 42px, h1 2.5em, h2 1.6em, h3 1.3em.) */
+    .reveal {
+      --r-main-font-size: 24px;
+      --r-heading1-size: 1.9em;
+      --r-heading2-size: 1.3em;
+      --r-heading3-size: 1.1em;
+    }
+
+    /* Keep embedded media (iframes/images) sensibly sized within a slide */
+    .reveal img { max-height: 60vh; }
+    .reveal iframe { max-width: 100%; }
+
+    /* Create columns on a slide */
+    .reveal .columns { display: flex; gap: 2rem; align-items: center; }
+    .reveal .columns > * { flex: 1; }
+
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <!-- kramdown renders the Markdown to HTML here; the script below
+         splits it into <section> slides at every <hr> (a `---` line). -->
+    <div class="slides">{{ content }}</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/notes/notes.js"></script>
+  <script>
+    // Reorganise the flat, kramdown-rendered HTML into reveal.js slides.
+    // Every <hr> (produced by a `---` line) marks a slide boundary.
+    (function () {
+      var slidesEl = document.querySelector('.reveal > .slides');
+      var nodes = Array.prototype.slice.call(slidesEl.childNodes);
+      slidesEl.innerHTML = '';
+
+      var section = document.createElement('section');
+      slidesEl.appendChild(section);
+
+      nodes.forEach(function (node) {
+        if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'HR') {
+          section = document.createElement('section');
+          slidesEl.appendChild(section);
+        } else {
+          section.appendChild(node);
+        }
+      });
+
+      // Open every link in a new tab so clicking one doesn't navigate
+      // away from the presentation. rel="noopener" is added for security.
+      slidesEl.querySelectorAll('a[href]').forEach(function (a) {
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+      });
+
+      Reveal.initialize({
+        hash: true,
+        slideNumber: 'c/t',
+        controls: true,
+        progress: true,
+        plugins: [RevealHighlight, RevealNotes]
+      });
+    })();
+  </script>
+</body>
+</html>

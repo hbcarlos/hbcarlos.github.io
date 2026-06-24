@@ -41,6 +41,10 @@ defaults:
       path: "analytics" # Aplica a todo lo que esté en esta carpeta
     values:
       sitemap: false    # Lo elimina del sitemap.xml
+  - scope:
+      path: "other" # Aplica a todo lo que esté en esta carpeta
+    values:
+      sitemap: false    # Lo elimina del sitemap.xml
 plugins:
   - jekyll-feed
 

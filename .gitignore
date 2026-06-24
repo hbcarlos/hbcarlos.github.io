@@ -9,6 +9,9 @@ Gemfile.lock
 .pixi/*
 !.pixi/config.toml
 
+# Gen AI
+.claude
+
 # resources
 data/
 
