@@ -1,6 +1,6 @@
 ---
 layout: slides
-title: "Carlos Herrero - Fullstack Developer Python & React"
+title: "Carlos Herrero — Real-Time Collaboration in Project Jupyter"
 permalink: /slides/presentation_between/
 sitemap: false
 noindex: true
@@ -22,12 +22,14 @@ Software Engineer passionate about Open Source and its ability to bridge the dig
 
 # Introduction
 
-* My impact at the Project Jupyter as a QuantStack employee
+* My work at Project Jupyter as a QuantStack employee
 * How we added Real-Time Collaboration
+  * My role on the project
   * The Software Engineering
   * The Social Engineering
 * Other projects I worked on at Jupyter
 * Jupyverse
+  * A modern jupyter server with FastAPI
 
 ---
 
@@ -35,35 +37,38 @@ Software Engineer passionate about Open Source and its ability to bridge the dig
 
 [![Jupyter Project](/assets/between/project_header.png)](https://jupyter.org)
 
-My main focus was on JupyterLab with significant [pull requests](https://github.com/jupyterlab/jupyterlab/pulls?q=is%3Apr+author%3Ahbcarlos+is%3Aclosed+sort%3Acreated-asc) over multiple years.
+During my carrer at QuantStack, my main focus was on JupyterLab, with significant [pull requests](https://github.com/jupyterlab/jupyterlab/pulls?q=is%3Apr+author%3Ahbcarlos+is%3Aclosed+sort%3Acreated-asc) over multiple years.
 
 ---
 
 # Real-Time Collaboration
+### Shared editing in JupyterLab
 
 [![RTC](/assets/between/shared_cursors.png)](https://mybinder.org/v2/gist/hbcarlos/a44ad9258f7ea9c21e7fa04d84fc41a9/HEAD?urlpath=lab)
 
 ---
 
 # Real-Time Collaboration
+### The team
 
 <div class="columns">
 <div markdown="1">
 
 [**Kevin Jahns**](https://github.com/dmonad)
 
-* Author of the [Yjs](https://yjs.dev), a CRDT (conflict-free replicated data type) implementation
-* We hired him to implement shared editing on JupyterLab
+* Author of [Yjs](https://yjs.dev), a CRDT (conflict-free replicated data type) implementation
+* We hired him to implement shared editing in JupyterLab
 
 </div>
 
 <div markdown="1">
 
-**My initial job on RTC**
-* Onboard Kevin at the Jupyter Project
-* show him the source code, resolve questions about JupyterLab and
-* learn about RTC, Yjs, CRDTs and his implemtation on JupyterLab
-* to take over the project
+**My initial work on RTC**
+
+* Onboard Kevin onto Project Jupyter
+* Walk him through the JupyterLab source and answer his questions
+* Learn RTC, Yjs, CRDTs and his implementation
+* Eventually take over the project
 
 </div>
 </div>
@@ -73,29 +78,25 @@ My main focus was on JupyterLab with significant [pull requests](https://github.
 ---
 
 # Real-Time Collaboration
+### Two competing approaches
 
 <div class="columns">
 <div markdown="1">
 
-**Initial implementation**
+**Yjs — initial implementation**
+
 * [[WIP] Collaborative editing using Yjs](https://github.com/jupyterlab/jupyterlab/pull/9785)
-* I implemente the echo WebSocket endpoint
-
-**Automerge**
-* Eric Charles and Pierre-Olivier Simonard
-* They were using Automerge (Another CRDT implementation)
-* [Jupyterlab/rtc](https://github.com/jupyterlab/rtc/)
+* I implemented the echo WebSocket endpoint
 
 </div>
 
 <div markdown="1">
 
-**Joint effort**
-* Initial PR for Real-Time Collaboration by Kevin with help from Eric Charles and me
-* [Shared editing with collaborative notebook model](https://github.com/jupyterlab/jupyterlab/pull/10118)
-* We got some push back from users because it had some bugs
-* The first user opening the document loaded the content from disk.
-* We could not make breaking changes to the API in Lab v3.6
+**Automerge — a parallel effort**
+
+* By Eric Charles and Pierre-Olivier Simonard
+* Used Automerge, another CRDT implementation
+* [jupyterlab/rtc](https://github.com/jupyterlab/rtc/)
 
 </div>
 </div>
@@ -103,29 +104,39 @@ My main focus was on JupyterLab with significant [pull requests](https://github.
 ---
 
 # Real-Time Collaboration
+### Joint effort & the hard bugs
+
+* Initial PR for Real-Time Collaboration by Kevin, with help from Eric Charles and me
+* [Shared editing with collaborative notebook model](https://github.com/jupyterlab/jupyterlab/pull/10118)
+* We got some pushback from users because of early bugs
+  * Only the first user to open a document loaded its content from disk — late joiners could see stale state
+  * We could not make breaking API changes in JupyterLab v3.6
+
+---
+
+# Real-Time Collaboration
+### Moving to an extension
 
 <div class="columns">
 <div markdown="1">
 
-**Move to an extension**
-* We couldn't move fast because it was on JupyterLab core
-* I created [JupyterLab-collaboration](https://github.com/jupyterlab/jupyter-collaboration)
-* We could break things and iterate faster
-* We mainly worked on the backend
-* Created [YDocuments](https://github.com/jupyter-server/jupyter_ydoc) (A python representation of the document)
-* Load the content at the server side
-* Propagate the content to every user
+* In JupyterLab core we couldn't iterate fast enough
+* I created [jupyter-collaboration](https://github.com/jupyterlab/jupyter-collaboration)
+* We could break things and iterate faster, mostly on the backend
+* Created [jupyter_ydoc](https://github.com/jupyter-server/jupyter_ydoc) — a Python (pycrdt) representation of the documents
+* The server loads the content and propagates it to every user
 
 </div>
 
 <div markdown="1">
 
-**RTC extensions**
+**Extensions built on this foundation**
+
 * [JupyterCAD](https://github.com/jupytercad/JupyterCAD)
-  * a JupyterLab extension for collaborative 3D CAD modeling
-  * using Open Cascade (compiled to WebAssembly) for the geometry kernel and Three.js for rendering
+  * Collaborative 3D CAD modeling in JupyterLab
+  * OpenCascade.js (WebAssembly) for the geometry kernel, Three.js for rendering
 * [JupyterLab-DrawIO](https://github.com/QuantStack/jupyterlab-drawio)
-  * A JupyterLab extension for embedding drawio / mxgraph.
+  * Embedding drawio / mxgraph in JupyterLab
 
 </div>
 </div>
@@ -133,19 +144,45 @@ My main focus was on JupyterLab with significant [pull requests](https://github.
 ---
 
 # Real-Time Collaboration
+### The result
 
 <iframe width="640" height="360"
   src="https://www.youtube.com/embed/CoZ3Sg--JLk"
   title="YouTube video player" frameborder="0"
-  allow="acceleropackeometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen>
 </iframe>
 
 ---
 
+# Real-Time Collaboration
+### Where it is today
+
+* RTC is now the **default** collaboration framework in JupyterLab 4
+* `jupyter-collaboration` and `jupyter_ydoc` are official Jupyter packages
+* The same foundation powers [JupyterCAD](https://github.com/jupytercad/JupyterCAD), [JupyterGIS](https://github.com/geojupyter/jupytergis) and JupyterLab-DrawIO
+* `pycrdt` is now the shared Python CRDT layer across the ecosystem
+
+---
+
+# The Social Engineering
+
+Adding RTC was as much about people as about code:
+
+* **Onboarding** Kevin Jahns onto Project Jupyter
+* **Bridging two rival approaches** (Yjs and Automerge) into a single joint effort
+* **Moving the work out of core** into an extension so we could iterate without breaking users
+* **Building consensus** across QuantStack, the original authors and the community
+
+---
+
+# Other projects at Jupyter
+
+---
+
 # [Voila-GridStack](https://github.com/voila-dashboards/voila-gridstack)
 
-Dashboard template for Voilà, to easily rearenge notebook cells in the dashboard.
+A Voilà dashboard template that lets you rearrange notebook cells into a dashboard via drag-and-drop. I also wrote the [Dashboarding with JupyterLab 3](https://blog.jupyter.org/dashboarding-with-jupyterlab-3-789fcb1a5857) post about it.
 
 ![Voila-gridstack](/assets/between/dashboard.gif)
 
@@ -153,7 +190,7 @@ Dashboard template for Voilà, to easily rearenge notebook cells in the dashboar
 
 # [JupyterLab-Blockly](https://github.com/QuantStack/jupyterlab-blockly)
 
-Blockly is a library from Google for building beginner-friendly block-based programming languages
+Blockly is a Google library for building beginner-friendly, block-based programming languages.
 
 [![blockly](/assets/between/overwies.gif)](https://jupyterlab-blockly.readthedocs.io/en/latest/lite/lab/index.html?path=example.jpblockly)
 
@@ -161,7 +198,7 @@ Blockly is a library from Google for building beginner-friendly block-based prog
 
 # [Glue-JupyterLab](https://github.com/QuantStack/glue-jupyterlab)
 
-An extension to bring the data exploration tool Glue to the cloud.
+An extension that brings the Glue data-exploration tool into JupyterLab.
 
 ![glue](/assets/between/exploration.gif)
 
@@ -169,7 +206,7 @@ An extension to bring the data exploration tool Glue to the cloud.
 
 # [JupyterLab LSP migration](https://github.com/jupyterlab/jupyterlab/pull/14920)
 
-Coding assistance for JupyterLab (code navigation + hover suggestions + linters + autocompletion + rename) using Language Server Protocol
+Coding assistance for JupyterLab (code navigation + hover suggestions + linters + autocompletion + rename) using the Language Server Protocol.
 
 ![lsp](/assets/between/image_4.gif)
 
@@ -177,6 +214,12 @@ Coding assistance for JupyterLab (code navigation + hover suggestions + linters 
 
 # [Jupyverse](https://github.com/jupyter-server/jupyverse)
 
-* A modern Jupyter server implemente using FastAPI
-* Designed around RBAC (Role-based access control) from the begining
-* Where we could experiment freely with collaborative editing capabillities
+* A modern Jupyter server built with FastAPI
+* Designed around RBAC (Role-Based Access Control) from the beginning
+* A place where we could experiment freely with collaborative editing capabilities
+
+---
+
+# Thank you
+
+* GitHub — [@hbcarlos](https://github.com/hbcarlos)
